@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<title></title>
+<style type="text/css">
+.uploadTable,.uploadTable td{border:1px solid #eee;}
+.uploadTable{border-collapse:separate;}
+.upFileBtn { width:135px; height:44px; background:url(fileUpload.png); position:relative; overflow:hidden; margin:0 auto;z-index:1; }
+.upFileBtn input { position:absolute; top:0; right:0; font-size:100px; opacity:0; filter:alpha(opacity=0); cursor:pointer; }
+.preview {z-index:2; }
+</style>
+<script type="text/javascript" src="js/uploadPreview.js"></script>
+</head>
+<body>
+<table class="uploadTable">
+  <tr>
+    <td><div class="preview" id="preview"><img src="defaultIocn_.png" /></div></td>
+    <td><div class="preview" id="preview2"><img src="defaultIocn_.png" /></div></td>
+    <td><div class="preview" id="preview3"><img src="defaultIocn_.png" /></div></td>
+  </tr>
+  <tr>
+    <td><div class="upFileBtn">
+        <input type="file" size="1" name="" id="file" />
+      </div></td>
+    <td><div class="upFileBtn">
+        <input type="file" size="1" name="" id="file2" />
+      </div></td>
+    <td><div class="upFileBtn">
+        <input type="file" size="1" name="" id="file3" />
+      </div></td>
+  </tr>
+</table>
+<script type="text/javascript">
+	new uploadPreview({
+		fileInput: document.getElementById('file'),
+		preview: document.getElementById('preview'),
+		width:135,
+		height:150
+	});
+	new uploadPreview({
+		fileInput: document.getElementById('file2'),
+		preview: document.getElementById('preview2'),
+		width:135,
+		height:150
+	});
+	new uploadPreview({
+		fileInput: document.getElementById('file3'),
+		preview: document.getElementById('preview3'),
+		width:135,
+		height:150
+	});		
+</script>
+</body>
+</html>

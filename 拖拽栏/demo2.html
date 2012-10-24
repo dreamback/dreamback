@@ -1,0 +1,223 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title></title>
+	<style type="text/css">
+	*{margin: 0;padding: 0;}
+	ul,li{list-style:none;}
+	.dreamback-container{width:663px;margin:20px auto;border:1px solid #FBE1CB;height:110px;padding:0 5px;}
+	.dreamback-container .next,.dreamback-container .prev{width:19px;height:56px;float:left;margin-top:20px;cursor:pointer;}
+	.dreamback-container .next{background:url(images/next.png);}
+	.dreamback-container .prev{background:url(images/prev.png);}
+	.dream-drag-container{width:615px;height: 100px;overflow: hidden;margin:auto 5px;padding-top:10px;float:left;}
+	.dream-drag-container li{float: left;width: 103px;height:68px;border:1px solid #ccc; text-align:center;display:inline;margin-left:15px;overflow:hidden;}
+	.dream-drag-container li.cur{border:2px solid #F87404;width:101px;height:66px;}
+	.dragBarContainer{height:17px;border:1px solid #FDE8D6;background:#FBF1E8;position:absolute;width:585px;left:15px;bottom:5px;}
+	.dragBar{height:15px;background:url(images/dragBar2.png);width:172px;position:absolute;left:0;top:1px;cursor:move;overflow:hidden;}
+	
+	#PicShowContainer{width:800px;margin:0 auto;border:1px solid #ccc;position:relative;height:350px;overflow:hidden;text-align:center;}
+	#picLoadImg{position:absolute;left:0;top:0;width:100%;height:100%;display:none;z-index:10;background:#000 url(images/ajax-loader.gif) 50% 50% no-repeat;}
+	</style>
+	<script type="text/javascript" src="../js/dreamback.js"></script>
+</head>
+<body>
+<div id="PicShowContainer">
+<div id="picLoadImg"></div>
+<img src=""/>
+</div>
+<div class="dreamback-container">
+		<div class="prev"></div>
+		<div class="dream-drag-container">
+			<ul>
+		<li><img data-src="http://img1.gtimg.com/news/pics/hv1/21/133/1046/68050086.jpg" src="http://img1.gtimg.com/news/pics/hv1/24/133/1046/68050089.jpg"></li>
+		<li> <img data-src="http://img1.gtimg.com/4/403/40391/4039127_980x1200_0.jpg" src="http://img1.gtimg.com/4/403/40391/4039127_116x86_0.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/4/403/40391/4039128_980x1200_0.jpg" src="http://img1.gtimg.com/4/403/40391/4039128_116x86_0.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/4/403/40391/4039129_980x1200_0.jpg" src="http://img1.gtimg.com/4/403/40391/4039129_116x86_0.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/4/403/40391/4039130_980x1200_0.jpg" src="http://img1.gtimg.com/4/403/40391/4039130_116x86_0.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/11/149/1046/68054156.jpg" src="http://img1.gtimg.com/news/pics/hv1/18/149/1046/68054163.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/12/149/1046/68054157.jpg" src="http://img1.gtimg.com/news/pics/hv1/17/149/1046/68054162.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/9/149/1046/68054154.jpg" src="http://img1.gtimg.com/news/pics/hv1/15/149/1046/68054160.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/8/149/1046/68054153.jpg" src="http://img1.gtimg.com/news/pics/hv1/14/149/1046/68054159.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/10/149/1046/68054155.jpg" src="http://img1.gtimg.com/news/pics/hv1/16/149/1046/68054161.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/251/148/1046/68054141.jpg" src="http://img1.gtimg.com/news/pics/hv1/4/149/1046/68054149.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/253/148/1046/68054143.jpg" src="http://img1.gtimg.com/news/pics/hv1/2/149/1046/68054147.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/252/148/1046/68054142.jpg" src="http://img1.gtimg.com/news/pics/hv1/3/149/1046/68054148.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/250/148/1046/68054140.jpg" src="http://img1.gtimg.com/news/pics/hv1/1/149/1046/68054146.jpg"> </li>
+		<li> <img data-src="http://img1.gtimg.com/news/pics/hv1/249/148/1046/68054139.jpg" src="http://img1.gtimg.com/news/pics/hv1/0/149/1046/68054145.jpg"> </li>
+			</ul>
+		</div>
+        <div class="next"></div>
+	</div>
+<script type="text/javascript">
+function dragContainer(options) {
+    this.container = options.container;
+    this.moveContainer = options.moveContainer;
+    this.fullWidth = options.fullWidth;
+    this.subWidth = options.subWidth;
+    this.dragWidth = options.dragWidth;
+    this.marginLeft = options.marginLeft;
+    this.size = this.moveContainer.find('li').size();
+
+    this.initi();
+};
+dragContainer.prototype = {
+    initi: function () {
+        this.container.css({
+            position: 'relative',
+            overfolw: 'hidden'
+        });
+        this.moveContainer.css({
+            width: (this.subWidth * this.size + this.marginLeft) + 'px',
+            position: 'absolute'
+        });
+        this.createDragBar();
+        this.dragBarEvent();
+    },
+    createDragBar: function () {
+        this.dragBarContainer = dream.create('div');
+        this.dragBar = dream.create('div');
+
+        this.container.append(this.dragBarContainer);
+        dream(this.dragBarContainer).addClass('dragBarContainer').append(this.dragBar);
+        dream(this.dragBar).addClass('dragBar');
+
+    },
+    dragBarEvent: function () {
+        var mouseOffsetX = 0,
+            that = this,
+            maxX = this.fullWidth - this.dragWidth - 30,
+            mouseOffsetX = 0,
+            getMousePosition = function (e) {
+                var dragBarContainerX = dream(that.dragBarContainer).getElemPosition().left;
+                return dream.browser.ie ? (e.clientX + dream.getScrollPosition().left - dragBarContainerX) : e.pageX - dragBarContainerX
+            },
+            documentMouseMove = function (e) {
+                if (document.selection && document.selection.empty) {
+                    document.selection.empty(); //IE
+                } else if (window.getSelection) {
+                    window.getSelection().removeAllRanges(); //火狐
+                }
+                var mousePostion = getMousePosition(e),
+                    x = mousePostion - mouseOffsetX;
+
+                if (x < 0) x = 0;
+                if (x > maxX) x = maxX;
+
+                dream(that.dragBar).css({
+                    left: x + 'px'
+                });
+                that.moveContainerScroll(x);
+            },
+            documentMouseUp = function (e) {
+                dream(document).removeEvent('mousemove', documentMouseMove).removeEvent('mouseup', documentMouseUp);
+            };
+
+        dream(this.dragBar).addEvent('mousedown', function (e) {
+            mouseOffsetX = e.offsetX || e.layerX;
+            dream(document).addEvent('mousemove', documentMouseMove).addEvent('mouseup', documentMouseUp);
+        });
+    },
+    moveContainerScroll: function (x) {
+        this.moveContainer.css({
+            left: -x / (this.fullWidth - this.dragWidth - 30) * ((this.subWidth * this.size + this.marginLeft) - this.fullWidth) + 'px'
+        });
+    }
+};
+dream.extend({
+    loadImg: function (url, callBack) {
+        var img = new Image();
+        img.src = url;
+
+        if (img.complete) {
+            callBack.call(img);
+            return;
+        }
+
+        img.onload = function () {
+            callBack.call(img);
+        };
+    }
+});
+
+function PicPlay(options) {
+    this.picContainer = options.picContainer;
+    this.btnsLi = options.btnsLi;
+    this.picLoadImg = options.picLoadImg;
+    this.showPic = options.showPic;
+    this.size = this.btnsLi.size();
+    this.curIndex = 0;
+
+    this.initi();
+}
+PicPlay.prototype = {
+    initi: function () {
+        this.picLoadImg.css({
+            opacity: 0.5
+        });
+        this.setPic(this.btnsLi.eq(this.curIndex));
+        this.btnsLiEvent();
+    },
+    btnsLiEvent: function () {
+        var that = this;
+        this.btnsLi.each(function (i) {
+            dream(this).addEvent('click', function () {
+                that.curIndex = i;
+                that.setPic(this);
+            });
+        });
+    },
+    setPic: function (btnLi) {
+        var that = this;
+        this.picLoadImg.css({
+            display: 'block'
+        }).animate({
+            opacity: 0.5
+        }, 500);
+        this.btnsLi.eq(this.curIndex).addClass('cur').siblings().removeClass('cur');
+        dream.loadImg(dream(btnLi).find('img').attr('data-src'), function () {
+            that.showPic.attr('src', this.src);
+            that.picContainer.animate({
+                height: this.height
+            }, 600);
+            that.picLoadImg.animate({
+                opacity: 0
+            }, 500, function () {
+                that.picLoadImg.css({
+                    display: 'none'
+                });
+            });
+        });
+    },
+    next: function () {
+        this.curIndex = this.curIndex + 1 >= this.size ? 0 : this.curIndex + 1;
+        this.setPic(this.btnsLi.eq(this.curIndex));
+    },
+    prev: function () {
+        this.curIndex = this.curIndex - 1 <= 0 ? this.size - 1 : this.curIndex - 1;
+        this.setPic(this.btnsLi.eq(this.curIndex));
+    }
+}
+new dragContainer({
+    container: dream('.dream-drag-container').eq(0),
+    moveContainer: dream('.dream-drag-container ul').eq(0),
+    fullWidth: 615,
+    subWidth: 120,
+    marginLeft: 15,
+    dragWidth: 172
+});
+var pp = new PicPlay({
+    picContainer: dream('#PicShowContainer'),
+    btnsLi: dream('.dream-drag-container li'),
+    picLoadImg: dream('#picLoadImg'),
+    showPic: dream('#PicShowContainer img').eq(0)
+});
+dream('.prev').addEvent('click', function () {
+    pp.prev();
+});
+dream('.next').addEvent('click', function () {
+    pp.next();
+});
+</script>    
+</body>
+</html>
