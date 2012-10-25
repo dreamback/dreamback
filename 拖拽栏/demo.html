@@ -1,0 +1,149 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title></title>
+	<style type="text/css">
+	*{margin: 0;padding: 0;}
+	ul,li{list-style:none;}
+	.dream-drag-container{width:1000px;height: 200px;overflow: hidden;margin: 100px auto 0;border:1px solid #ccc;padding-top:10px;}
+	.dream-drag-container li{float: left;width: 170px;height:170px; text-align:center;display:inline;margin-left:25px;}
+	.dragBarContainer{height:10px;border-top:1px solid #ccc;position:absolute;width:980px;left:10px;bottom:5px;}
+	.dragBar{height:13px;background-image:url(images/dragBar.png);width:182px;position:absolute;left:0;top:-5px;cursor:move;overflow:hidden;}
+	.dragBar:hover{background-position:0 -13px;}
+	</style>
+	<script type="text/javascript" src="../js/dreamback.js"></script>
+</head>
+<body>
+	<div class="dream-drag-container">
+		<ul style="left:0;">
+			<li><img src="images/1.jpg" /></li>
+			<li><img src="images/2.jpg" /></li>
+			<li><img src="images/3.jpg" /></li>
+			<li><img src="images/4.jpg" /></li>
+			<li><img src="images/5.jpg" /></li>
+			<li><img src="images/6.jpg" /></li>
+			<li><img src="images/7.jpg" /></li>
+			<li><img src="images/8.jpg" /></li>
+			<li><img src="images/9.jpg" /></li>
+			<li><img src="images/10.jpg" /></li>
+			<li><img src="images/11.jpg" /></li>
+			<li><img src="images/12.jpg" /></li>
+			<li><img src="images/13.jpg" /></li>
+			<li><img src="images/14.jpg" /></li>
+			<li><img src="images/1.jpg" /></li>
+			<li><img src="images/2.jpg" /></li>
+			<li><img src="images/3.jpg" /></li>
+			<li><img src="images/4.jpg" /></li>
+			<li><img src="images/5.jpg" /></li>
+			<li><img src="images/6.jpg" /></li>
+			<li><img src="images/7.jpg" /></li>
+			<li><img src="images/8.jpg" /></li>
+			<li><img src="images/9.jpg" /></li>
+			<li><img src="images/10.jpg" /></li>
+			<li><img src="images/11.jpg" /></li>
+			<li><img src="images/12.jpg" /></li>
+			<li><img src="images/13.jpg" /></li>
+			<li><img src="images/14.jpg" /></li>
+		</ul>
+	</div>
+<script type="text/javascript">
+function dragContainer(options){
+	this.container = options.container;
+	this.moveContainer = options.moveContainer;
+	this.fullWidth = options.fullWidth;
+	this.subWidth = options.subWidth;
+	this.dragWidth = options.dragWidth;
+	this.marginLeft = options.marginLeft;
+	this.size = this.moveContainer.find('li').size();
+	
+	this.initi();
+	};
+dragContainer.prototype = {
+		initi: function(){
+				this.container.css({
+					position:'relative',
+					overfolw:'hidden'
+					});
+				this.moveContainer.css({
+					width:(this.subWidth * this.size + this.marginLeft ) + 'px',
+					position:'absolute'
+					});
+				this.createDragBar();
+				this.dragBarEvent();
+			},
+		createDragBar: function(){
+			this.dragBarContainer = dream.create('div');
+			this.dragBar = dream.create('div');
+			
+			this.container.append(this.dragBarContainer);
+			dream(this.dragBarContainer).addClass('dragBarContainer').append(this.dragBar);
+			dream(this.dragBar).addClass('dragBar');
+			
+			},
+		dragBarEvent: function(){
+			var mouseOffsetX = 0,
+			  	that = this,
+				maxX = this.fullWidth-this.dragWidth-20,
+				mouseOffsetX = 0,
+				getMousePosition = function(e){
+					var dragBarContainerX = dream(that.dragBarContainer).getElemPosition().left;
+					return dream.browser.ie ? (e.clientX + dream.getScrollPosition().left-dragBarContainerX) : e.pageX-dragBarContainerX
+				},
+				documentMouseMove = function(e){
+					if (document.selection && document.selection.empty) {
+						document.selection.empty();  //IE
+					} else if (window.getSelection) {
+						window.getSelection().removeAllRanges(); //火狐
+					}					
+					var mousePostion = getMousePosition(e),
+						x = mousePostion - mouseOffsetX;
+						
+						if( x < 0 ) x = 0;
+						if( x > maxX ) x = maxX;
+
+					dream(that.dragBar).css({
+						left : x + 'px'
+					});
+					that.moveContainerScroll(x);
+				},
+				documentMouseUp = function(e){
+					dream(document).removeEvent('mousemove',documentMouseMove).removeEvent('mouseup',documentMouseUp);
+				};
+				
+			dream(this.dragBar).addEvent('mousedown',function(e){
+					mouseOffsetX = e.offsetX || e.layerX;
+					dream(document).addEvent('mousemove',documentMouseMove).addEvent('mouseup',documentMouseUp);
+				});
+			},
+		moveContainerScroll: function(x){
+			// this.moveContainer.css({
+			// 	left: -x/(this.fullWidth-this.dragWidth-20)*((this.subWidth * this.size + this.marginLeft)-this.fullWidth) + 'px'
+			// 	});
+			var left= -x/(this.fullWidth-this.dragWidth-20)*((this.subWidth * this.size + this.marginLeft)-this.fullWidth) ,
+				that = this;
+			~function(){
+				that.moveContainer.stop().animate({left:left},3000,null,function(t,b,c,d){
+					return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+	        		});
+
+			}();
+		}	
+	};
+
+
+new dragContainer({
+		container:dream('.dream-drag-container').eq(0),
+		moveContainer:dream('.dream-drag-container ul').eq(0),
+		fullWidth:1000,
+		subWidth:195,
+		marginLeft:25,
+		dragWidth:182
+	});	
+dream('.dream-drag-container').addEvent('mousewheel',function(e){
+	alert(1);
+	document.title = e.detail;
+})
+</script>    
+</body>
+</html>
